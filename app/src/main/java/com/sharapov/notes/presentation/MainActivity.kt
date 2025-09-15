@@ -1,4 +1,4 @@
-package com.sharapov.notes
+package com.sharapov.notes.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.sharapov.notes.ui.theme.NotesTheme
+import com.sharapov.notes.presentation.ui.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

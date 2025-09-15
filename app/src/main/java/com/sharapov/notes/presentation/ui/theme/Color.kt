@@ -1,4 +1,4 @@
-package com.sharapov.notes.ui.theme
+package com.sharapov.notes.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

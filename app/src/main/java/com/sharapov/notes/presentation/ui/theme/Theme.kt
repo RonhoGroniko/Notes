@@ -1,6 +1,5 @@
-package com.sharapov.notes.ui.theme
+package com.sharapov.notes.presentation.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
