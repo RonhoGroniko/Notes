@@ -1,8 +1,10 @@
 package com.sharapov.notes.domain
 
-class AddNoteUseCase {
+class AddNoteUseCase(
+    private val repository: NotesRepository
+) {
 
-    operator fun invoke() {
-        TODO()
+    operator fun invoke(note: Note) {
+        repository.addNote(note)
     }
 }

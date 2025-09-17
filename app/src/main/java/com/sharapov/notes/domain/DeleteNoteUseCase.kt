@@ -1,8 +1,10 @@
 package com.sharapov.notes.domain
 
-class DeleteNoteUseCase {
+class DeleteNoteUseCase(
+    private val repository: NotesRepository
+) {
 
     operator fun invoke(id: Int) {
-        TODO()
+        repository.deleteNote(id)
     }
 }
