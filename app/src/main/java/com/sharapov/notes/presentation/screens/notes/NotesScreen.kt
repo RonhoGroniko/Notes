@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,10 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sharapov.notes.domain.Note
-import com.sharapov.notes.presentation.ui.theme.Green
 import com.sharapov.notes.presentation.ui.theme.OtherNotesColors
 import com.sharapov.notes.presentation.ui.theme.PinnedNotesColors
-import com.sharapov.notes.presentation.ui.theme.Yellow100
 
 @Composable
 fun NotesScreen(

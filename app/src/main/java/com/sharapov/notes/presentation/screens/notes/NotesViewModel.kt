@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesViewModel : ViewModel() {
@@ -67,30 +68,37 @@ class NotesViewModel : ViewModel() {
     }
 
     private fun addSomeNotes() {
-        repeat(10_000) {
-            addNoteUseCase(title = "Title $it", content = "Content $it")
+        viewModelScope.launch {
+            repeat(10_000) {
+                addNoteUseCase(
+                    title = "Title $it",
+                    content = "Content $it"
+                )
+            }
         }
     }
 
     fun processCommand(command: NotesCommand) {
-        when (command) {
+        viewModelScope.launch {
+            when (command) {
 
-            is NotesCommand.DeleteNote -> {
-                deleteNoteUseCase(command.id)
-            }
+                is NotesCommand.DeleteNote -> {
+                    deleteNoteUseCase(command.id)
+                }
 
-            is NotesCommand.EditNote -> {
-                val note = getNoteUseCase(command.note.id)
-                val title =note.title
-                editNoteUseCase(note.copy(title = "$title edited"))
-            }
+                is NotesCommand.EditNote -> {
+                    val note = getNoteUseCase(command.note.id)
+                    val title =note.title
+                    editNoteUseCase(note.copy(title = "$title edited"))
+                }
 
-            is NotesCommand.SwitchPinnedStatus -> {
-                switchPinnedStatusUseCase(command.id)
-            }
+                is NotesCommand.SwitchPinnedStatus -> {
+                    switchPinnedStatusUseCase(command.id)
+                }
 
-            is NotesCommand.InputSearchQuery -> {
-                query.update { command.query.trim() }
+                is NotesCommand.InputSearchQuery -> {
+                    query.update { command.query.trim() }
+                }
             }
         }
     }

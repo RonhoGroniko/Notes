@@ -4,17 +4,17 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {
 
-    fun addNote(title: String, content: String)
+    suspend fun addNote(title: String, content: String, isPinned: Boolean, updatedAt: Long)
 
-    fun deleteNote(id: Int)
+    suspend fun deleteNote(id: Int)
 
-    fun editNote(note: Note)
+    suspend fun editNote(note: Note)
 
     fun getAllNotes(): Flow<List<Note>>
 
-    fun getNote(id: Int): Note
+    suspend fun getNote(id: Int): Note
 
     fun searchNotes(query: String) : Flow<List<Note>>
 
-    fun switchPinnedStatus(id: Int)
+    suspend fun switchPinnedStatus(id: Int)
 }
