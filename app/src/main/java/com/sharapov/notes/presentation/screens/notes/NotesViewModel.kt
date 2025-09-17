@@ -68,7 +68,7 @@ class NotesViewModel : ViewModel() {
 
     private fun addSomeNotes() {
         repeat(10_000) {
-            addNoteUseCase(title = "Title $it", content = " Content $it")
+            addNoteUseCase(title = "Title $it", content = "Content $it")
         }
     }
 
