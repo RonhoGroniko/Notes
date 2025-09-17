@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,12 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sharapov.notes.domain.Note
 import com.sharapov.notes.presentation.ui.theme.OtherNotesColors
 import com.sharapov.notes.presentation.ui.theme.PinnedNotesColors
+import com.sharapov.notes.presentation.utils.DateFormatter
 
 @Composable
 fun NotesScreen(
@@ -89,6 +92,7 @@ fun NotesScreen(
                     key = { _, note -> note.id }
                 ) { index, note ->
                     NoteCard(
+                        modifier = Modifier.widthIn(max = 160.dp),
                         note = note,
                         background = PinnedNotesColors[index % PinnedNotesColors.size],
                         onNoteClick = {
@@ -240,11 +244,13 @@ fun NoteCard(
         Text(
             text = note.title,
             fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = note.updatedAt.toString(),
+            text = DateFormatter.formatDateToString(note.updatedAt),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -252,6 +258,8 @@ fun NoteCard(
         Text(
             text = note.content,
             fontSize = 16.sp,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Medium
         )
