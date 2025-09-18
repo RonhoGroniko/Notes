@@ -21,3 +21,7 @@ fun NoteDbModel.toEntity(): Note {
         isPinned = isPinned
     )
 }
+
+fun List<NoteDbModel>.toEntities(): List<Note> {
+    return this.map { it.toEntity() }
+}

@@ -1,13 +1,10 @@
 package com.sharapov.notes.presentation.screens.notes
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sharapov.notes.data.TestNotesRepositoryImpl
-import com.sharapov.notes.domain.AddNoteUseCase
-import com.sharapov.notes.domain.DeleteNoteUseCase
-import com.sharapov.notes.domain.EditNoteUseCase
+import com.sharapov.notes.data.NotesRepositoryImpl
 import com.sharapov.notes.domain.GetAllNotesUseCase
-import com.sharapov.notes.domain.GetNoteUseCase
 import com.sharapov.notes.domain.Note
 import com.sharapov.notes.domain.SearchNotesUseCase
 import com.sharapov.notes.domain.SwitchPinnedStatusUseCase
@@ -21,9 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class NotesViewModel : ViewModel() {
+class NotesViewModel(context: Context) : ViewModel() {
 
-    private val repository = TestNotesRepositoryImpl
+    private val repository = NotesRepositoryImpl.getInstance(context)
 
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
     private val searchNotesUseCase = SearchNotesUseCase(repository)

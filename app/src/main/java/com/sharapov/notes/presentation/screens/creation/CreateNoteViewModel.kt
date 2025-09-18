@@ -1,17 +1,18 @@
 package com.sharapov.notes.presentation.screens.creation
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sharapov.notes.data.TestNotesRepositoryImpl
+import com.sharapov.notes.data.NotesRepositoryImpl
 import com.sharapov.notes.domain.AddNoteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreateNoteViewModel : ViewModel() {
+class CreateNoteViewModel(context: Context) : ViewModel() {
 
-    private val repository = TestNotesRepositoryImpl
+    private val repository = NotesRepositoryImpl.getInstance(context)
     private val addNoteUseCase = AddNoteUseCase(repository)
 
     private val _state = MutableStateFlow<CreateNoteState>(CreateNoteState.Creation())
