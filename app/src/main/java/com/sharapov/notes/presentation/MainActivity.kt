@@ -5,8 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.sharapov.notes.presentation.screens.creation.CreateNoteScreen
-import com.sharapov.notes.presentation.screens.notes.NotesScreen
+import com.sharapov.notes.presentation.screens.editing.EditNoteScreen
 import com.sharapov.notes.presentation.ui.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +14,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NotesTheme {
-                CreateNoteScreen()
+                EditNoteScreen(
+                    noteId = 5,
+                    onFinished = {
+                        Log.d("MainActivity", "FINISHED")
+                    }
+                )
+//                CreateNoteScreen(
+//                    onFinished = {
+//                        Log.d("MainActivity", "FINISHED")
+//                    }
+//                )
 //                NotesScreen(
 //                    onFABClick = { Log.d("MainActivity", "Fab clicked") },
 //                    onNoteClick = { Log.d("MainActivity", "$it") }
