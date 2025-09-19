@@ -1,6 +1,9 @@
-package com.sharapov.notes.domain
+package com.sharapov.notes.domain.usecases
 
-class AddNoteUseCase(
+import com.sharapov.notes.domain.repository.NotesRepository
+import javax.inject.Inject
+
+class AddNoteUseCase @Inject constructor (
     private val repository: NotesRepository
 ) {
 

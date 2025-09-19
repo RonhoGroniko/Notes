@@ -1,8 +1,7 @@
-package com.sharapov.notes.data
+package com.sharapov.notes.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 
 @Entity(tableName = "notes")
 data class NoteDbModel(

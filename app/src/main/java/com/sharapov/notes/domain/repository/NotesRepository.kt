@@ -1,5 +1,6 @@
-package com.sharapov.notes.domain
+package com.sharapov.notes.domain.repository
 
+import com.sharapov.notes.domain.entities.Note
 import kotlinx.coroutines.flow.Flow
 
 interface NotesRepository {

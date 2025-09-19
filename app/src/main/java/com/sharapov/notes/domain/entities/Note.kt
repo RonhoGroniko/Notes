@@ -1,4 +1,4 @@
-package com.sharapov.notes.domain
+package com.sharapov.notes.domain.entities
 
 data class Note(
     val id: Int,

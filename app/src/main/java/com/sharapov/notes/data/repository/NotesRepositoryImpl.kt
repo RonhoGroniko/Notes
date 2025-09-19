@@ -1,16 +1,18 @@
-package com.sharapov.notes.data
+package com.sharapov.notes.data.repository
 
-import android.content.Context
-import com.sharapov.notes.domain.Note
-import com.sharapov.notes.domain.NotesRepository
+import com.sharapov.notes.data.db.NoteDbModel
+import com.sharapov.notes.data.db.NotesDao
+import com.sharapov.notes.data.mapper.toDbModel
+import com.sharapov.notes.data.mapper.toEntities
+import com.sharapov.notes.data.mapper.toEntity
+import com.sharapov.notes.domain.entities.Note
+import com.sharapov.notes.domain.repository.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class NotesRepositoryImpl private constructor(
-    context: Context
-): NotesRepository {
+class NotesRepositoryImpl @Inject constructor (private val notesDao: NotesDao) : NotesRepository {
 
-    private val notesDao = NotesDatabase.getInstance(context).notesDao()
 
     override suspend fun addNote(
         title: String,
@@ -50,22 +52,5 @@ class NotesRepositoryImpl private constructor(
 
     override suspend fun switchPinnedStatus(id: Int) {
         notesDao.switchPinnedStatus(id)
-    }
-
-    companion object {
-
-        private val LOCK = Any()
-        private var instance: NotesRepositoryImpl? = null
-
-        fun getInstance(context: Context): NotesRepositoryImpl {
-            instance?.let { return it }
-            synchronized(LOCK) {
-                instance?.let { return it }
-                return NotesRepositoryImpl(context).also {
-                    instance = it
-                }
-            }
-        }
-
     }
 }
