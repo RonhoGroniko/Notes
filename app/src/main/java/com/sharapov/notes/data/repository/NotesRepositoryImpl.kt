@@ -1,10 +1,10 @@
 package com.sharapov.notes.data.repository
 
-import com.sharapov.notes.data.db.NoteDbModel
 import com.sharapov.notes.data.db.NotesDao
 import com.sharapov.notes.data.mapper.toDbModel
 import com.sharapov.notes.data.mapper.toEntities
 import com.sharapov.notes.data.mapper.toEntity
+import com.sharapov.notes.domain.entities.ContentItem
 import com.sharapov.notes.domain.entities.Note
 import com.sharapov.notes.domain.repository.NotesRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,17 +16,18 @@ class NotesRepositoryImpl @Inject constructor (private val notesDao: NotesDao) :
 
     override suspend fun addNote(
         title: String,
-        content: String,
+        content: List<ContentItem>,
         isPinned: Boolean,
         updatedAt: Long
     ) {
-        val noteDbModel = NoteDbModel(
+        val note = Note(
             id = 0,
             title = title,
             content = content,
             updatedAt = updatedAt,
             isPinned = isPinned
         )
+        val noteDbModel = note.toDbModel()
         notesDao.addNote(noteDbModel)
     }
 

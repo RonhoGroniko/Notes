@@ -1,4 +1,4 @@
-package com.sharapov.notes.data.db
+package com.sharapov.notes.data.db.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
