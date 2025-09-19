@@ -1,25 +1,28 @@
 package com.sharapov.notes.presentation.screens.editing
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sharapov.notes.data.NotesRepositoryImpl
-import com.sharapov.notes.domain.DeleteNoteUseCase
-import com.sharapov.notes.domain.EditNoteUseCase
-import com.sharapov.notes.domain.GetNoteUseCase
-import com.sharapov.notes.domain.Note
+import com.sharapov.notes.domain.entities.Note
+import com.sharapov.notes.domain.usecases.DeleteNoteUseCase
+import com.sharapov.notes.domain.usecases.EditNoteUseCase
+import com.sharapov.notes.domain.usecases.GetNoteUseCase
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class EditNoteViewModel(private val id: Int, context: Context) : ViewModel() {
-
-    private val repository = NotesRepositoryImpl.getInstance(context)
-
-    private val editNoteUseCase = EditNoteUseCase(repository)
-    private val deleteNoteUseCase = DeleteNoteUseCase(repository)
-    private val getNoteUseCase = GetNoteUseCase(repository)
+@HiltViewModel(assistedFactory = EditNoteViewModel.Factory::class)
+class EditNoteViewModel @AssistedInject constructor(
+    @Assisted("id") private val id: Int,
+    private val editNoteUseCase: EditNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val getNoteUseCase: GetNoteUseCase
+) :
+    ViewModel() {
 
     private val _state = MutableStateFlow<EditNoteState>(EditNoteState.Initial)
     val state = _state.asStateFlow()
@@ -91,6 +94,12 @@ class EditNoteViewModel(private val id: Int, context: Context) : ViewModel() {
             }
         }
     }
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(@Assisted("id") id: Int): EditNoteViewModel
+    }
 }
 
 sealed interface EditNoteCommand {
@@ -100,15 +109,15 @@ sealed interface EditNoteCommand {
 
     data object Save : EditNoteCommand
     data object Back : EditNoteCommand
-    data object Delete: EditNoteCommand
+    data object Delete : EditNoteCommand
 }
 
 sealed interface EditNoteState {
 
-    data object Initial: EditNoteState
+    data object Initial : EditNoteState
 
     data class Editing(
-       val note: Note
+        val note: Note
     ) : EditNoteState {
 
         val isSavable = note.content.isNotBlank() && note.title.isNotBlank()

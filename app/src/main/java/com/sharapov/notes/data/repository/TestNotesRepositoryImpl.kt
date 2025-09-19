@@ -1,7 +1,7 @@
-package com.sharapov.notes.data
+package com.sharapov.notes.data.repository
 
-import com.sharapov.notes.domain.Note
-import com.sharapov.notes.domain.NotesRepository
+import com.sharapov.notes.domain.entities.Note
+import com.sharapov.notes.domain.repository.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

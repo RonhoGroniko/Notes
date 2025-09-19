@@ -30,6 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sharapov.notes.presentation.utils.DateFormatter
 
@@ -38,12 +39,8 @@ import com.sharapov.notes.presentation.utils.DateFormatter
 fun EditNoteScreen(
     modifier: Modifier = Modifier,
     noteId: Int,
-    context: Context = LocalContext.current.applicationContext,
-    viewModel: EditNoteViewModel = viewModel {
-        EditNoteViewModel(
-            id = noteId,
-            context = context
-        )
+    viewModel: EditNoteViewModel = hiltViewModel { factory: EditNoteViewModel.Factory ->
+        factory.create(noteId)
     },
     onFinished: () -> Unit
 ) {

@@ -1,6 +1,7 @@
-package com.sharapov.notes.data
+package com.sharapov.notes.data.mapper
 
-import com.sharapov.notes.domain.Note
+import com.sharapov.notes.data.db.NoteDbModel
+import com.sharapov.notes.domain.entities.Note
 
 fun Note.toDbModel(): NoteDbModel {
     return NoteDbModel(

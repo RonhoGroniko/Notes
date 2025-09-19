@@ -1,9 +1,11 @@
-package com.sharapov.notes.data
+package com.sharapov.notes.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sharapov.notes.data.db.NoteDbModel
+import com.sharapov.notes.data.db.NotesDao
 
 @Database(
     entities = [NoteDbModel::class],
