@@ -29,16 +29,14 @@ class ImageFileManager @Inject constructor(
 
     suspend fun deleteImage(url: String) {
         withContext(Dispatchers.IO) {
-            if (isInternal(url)) {
-                val file = File(url)
-                if (file.exists() && isInternal(file.absolutePath)) {
-                    file.delete()
-                }
+            val file = File(url)
+            if (file.exists() && isInternal(file.absolutePath)) {
+                file.delete()
             }
         }
     }
 
-    private fun isInternal(url: String): Boolean {
+    fun isInternal(url: String): Boolean {
         return url.startsWith(imageDir.absolutePath)
     }
 }
