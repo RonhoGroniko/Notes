@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sharapov.notes.R
+import com.sharapov.notes.domain.entities.ContentItem
 import com.sharapov.notes.domain.entities.Note
 import com.sharapov.notes.presentation.ui.theme.OtherNotesColors
 import com.sharapov.notes.presentation.ui.theme.PinnedNotesColors
@@ -266,13 +267,15 @@ fun NoteCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = note.content,
-            fontSize = 16.sp,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Medium
-        )
+        note.content.filterIsInstance<ContentItem.Text>().joinToString("\n") { it.content }.let {
+            Text(
+                text = it,
+                fontSize = 16.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
+        }
     }
 }

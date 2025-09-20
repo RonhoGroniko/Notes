@@ -2,6 +2,7 @@ package com.sharapov.notes.presentation.screens.editing
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sharapov.notes.domain.entities.ContentItem
 import com.sharapov.notes.domain.entities.Note
 import com.sharapov.notes.domain.usecases.DeleteNoteUseCase
 import com.sharapov.notes.domain.usecases.EditNoteUseCase
@@ -46,7 +47,8 @@ class EditNoteViewModel @AssistedInject constructor(
             is EditNoteCommand.InputContent -> {
                 _state.update { previousState ->
                     if (previousState is EditNoteState.Editing) {
-                        val newNote = previousState.note.copy(content = command.content)
+                        val newContent = ContentItem.Text(content = command.content)
+                        val newNote = previousState.note.copy(content = listOf(newContent))
                         EditNoteState.Editing(note = newNote)
                     } else {
                         previousState
@@ -120,7 +122,19 @@ sealed interface EditNoteState {
         val note: Note
     ) : EditNoteState {
 
-        val isSavable = note.content.isNotBlank() && note.title.isNotBlank()
+        val isSavable: Boolean
+            get() {
+                return when {
+                    note.title.isBlank() -> false
+                    note.content.isEmpty() -> false
+                    else -> {
+                        note.content.any {
+                            it !is ContentItem.Text || it.content.isNotBlank()
+                        }
+                    }
+                }
+            }
+
     }
 
     data object Finish : EditNoteState
