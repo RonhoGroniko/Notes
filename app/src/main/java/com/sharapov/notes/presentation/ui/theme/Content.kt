@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -104,6 +106,7 @@ private fun ImageContent(
     ) {
         AsyncImage(
             modifier = Modifier
+                .heightIn(max = 240.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp)),
             model = imageUrl,
