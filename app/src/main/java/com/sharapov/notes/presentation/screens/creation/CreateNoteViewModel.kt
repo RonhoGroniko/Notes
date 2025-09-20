@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sharapov.notes.domain.entities.ContentItem
-import com.sharapov.notes.domain.entities.ContentItem.*
 import com.sharapov.notes.domain.usecases.AddNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,8 +84,8 @@ class CreateNoteViewModel @Inject constructor(private val addNoteUseCase: AddNot
                             if (lastItem is ContentItem.Text && lastItem.content.isBlank()) {
                                 removeAt(lastIndex)
                             }
-                            add(Image(command.uri.toString()))
-                            add(Text(""))
+                            add(ContentItem.Image(command.uri.toString()))
+                            add(ContentItem.Text(""))
                         }.let {
                             previousState.copy(content = it)
                         }
@@ -100,7 +99,13 @@ class CreateNoteViewModel @Inject constructor(private val addNoteUseCase: AddNot
                 _state.update { previousState ->
                     if (previousState is CreateNoteState.Creation) {
                         previousState.content.toMutableList().apply {
-                            removeAt(command.index)
+
+                            if ( command.index == 0 || (this[command.index - 1] is ContentItem.Image || this[command.index + 1] is ContentItem.Image)) {
+                                removeAt(command.index)
+                            } else {
+                                removeAt(command.index)
+                                removeAt(command.index)
+                            }
                         }.let {
                             previousState.copy(content = it)
                         }
