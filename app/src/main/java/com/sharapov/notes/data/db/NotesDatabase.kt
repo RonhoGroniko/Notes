@@ -4,15 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sharapov.notes.data.db.NoteDbModel
-import com.sharapov.notes.data.db.NotesDao
+import com.sharapov.notes.data.db.models.ContentItemDbModel
+import com.sharapov.notes.data.db.models.NoteDbModel
 
 @Database(
-    entities = [NoteDbModel::class],
-    version = 1,
+    entities = [NoteDbModel::class, ContentItemDbModel::class],
+    version = 3,
     exportSchema = false
 )
-abstract class NotesDatabase: RoomDatabase() {
+abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun notesDao(): NotesDao
 
@@ -31,9 +31,10 @@ abstract class NotesDatabase: RoomDatabase() {
                     context = context,
                     klass = NotesDatabase::class.java,
                     "notes.db"
-                ).build().also {
-                    instance = it
-                }
+                ).fallbackToDestructiveMigration(dropAllTables = true)
+                    .build().also {
+                        instance = it
+                    }
             }
         }
     }
