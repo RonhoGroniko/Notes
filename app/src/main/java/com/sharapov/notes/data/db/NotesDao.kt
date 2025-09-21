@@ -28,7 +28,7 @@ interface NotesDao {
         SELECT DISTINCT notes.* FROM notes JOIN content
         ON notes.id == content.noteId WHERE title 
         LIKE '%' || :query || '%' OR content 
-        LIKE '%' || :query || '%' 
+        LIKE '%' || :query || '%' AND contentType == 'TEXT'
         ORDER BY updatedAt DESC
         """)
     fun searchNotes(query: String) : Flow<List<NoteWithContentDbModel>>
