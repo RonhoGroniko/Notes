@@ -1,45 +1,54 @@
 package com.sharapov.notes.data.mapper
 
 import com.sharapov.notes.data.db.models.ContentItemDbModel
+import com.sharapov.notes.data.db.models.ContentType
 import com.sharapov.notes.data.db.models.NoteDbModel
+import com.sharapov.notes.data.db.models.NoteWithContentDbModel
 import com.sharapov.notes.domain.entities.ContentItem
 import com.sharapov.notes.domain.entities.Note
 import kotlinx.serialization.json.Json
 
 fun Note.toDbModel(): NoteDbModel {
-    val contentAsString = Json.encodeToString(content.toContentItemDbModels())
     return NoteDbModel(
         id = id,
         title = title,
-        content = contentAsString,
         updatedAt = updatedAt,
         isPinned = isPinned
     )
 }
 
-fun NoteDbModel.toEntity(): Note {
-    val contentItemDbModels = Json.decodeFromString<List<ContentItemDbModel>>(content)
+fun NoteWithContentDbModel.toEntity(): Note {
     return Note(
-        id = id,
-        title = title,
-        content = contentItemDbModels.toContentItemEntities(),
-        updatedAt = updatedAt,
-        isPinned = isPinned
+        id = noteDbModel.id,
+        title = noteDbModel.title,
+        content = content.toContentItemEntities(),
+        updatedAt = noteDbModel.updatedAt,
+        isPinned = noteDbModel.isPinned
     )
 }
 
-fun List<NoteDbModel>.toEntities(): List<Note> {
+fun List<NoteWithContentDbModel>.toEntities(): List<Note> {
     return this.map { it.toEntity() }
 }
 
-fun List<ContentItem>.toContentItemDbModels(): List<ContentItemDbModel> {
-    return this.map { contentItem ->
+fun List<ContentItem>.toContentItemDbModels(noteId: Int): List<ContentItemDbModel> {
+    return this.mapIndexed { index, contentItem ->
         when(contentItem) {
             is ContentItem.Image -> {
-                ContentItemDbModel.Image(url = contentItem.url)
+                ContentItemDbModel(
+                    noteId = noteId,
+                    contentType = ContentType.IMAGE,
+                    content = contentItem.url,
+                    order = index
+                )
             }
             is ContentItem.Text -> {
-                ContentItemDbModel.Text(content = contentItem.content)
+                ContentItemDbModel(
+                    noteId = noteId,
+                    contentType = ContentType.TEXT,
+                    content = contentItem.content,
+                    order = index
+                )
             }
         }
     }
@@ -48,12 +57,12 @@ fun List<ContentItem>.toContentItemDbModels(): List<ContentItemDbModel> {
 
 fun List<ContentItemDbModel>.toContentItemEntities(): List<ContentItem> {
     return this.map { contentItemDbModel ->
-        when(contentItemDbModel) {
-            is ContentItemDbModel.Image -> {
-                ContentItem.Image(url = contentItemDbModel.url)
-            }
-            is ContentItemDbModel.Text -> {
+        when(contentItemDbModel.contentType) {
+            ContentType.TEXT -> {
                 ContentItem.Text(content = contentItemDbModel.content)
+            }
+            ContentType.IMAGE -> {
+                ContentItem.Image(url = contentItemDbModel.content)
             }
         }
     }

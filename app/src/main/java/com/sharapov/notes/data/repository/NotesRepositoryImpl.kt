@@ -1,7 +1,9 @@
 package com.sharapov.notes.data.repository
 
 import com.sharapov.notes.data.db.NotesDao
+import com.sharapov.notes.data.db.models.NoteDbModel
 import com.sharapov.notes.data.internal_storage.ImageFileManager
+import com.sharapov.notes.data.mapper.toContentItemDbModels
 import com.sharapov.notes.data.mapper.toDbModel
 import com.sharapov.notes.data.mapper.toEntities
 import com.sharapov.notes.data.mapper.toEntity
@@ -24,15 +26,15 @@ class NotesRepositoryImpl @Inject constructor(
         isPinned: Boolean,
         updatedAt: Long
     ) {
-        val note = Note(
+        val processedContent = content.processToStorage()
+        val noteDbModel = NoteDbModel(
             id = 0,
             title = title,
-            content = content.processToStorage(),
             updatedAt = updatedAt,
             isPinned = isPinned
         )
-        val noteDbModel = note.toDbModel()
-        notesDao.addNote(noteDbModel)
+        val noteId = notesDao.addNote(noteDbModel).toInt()
+        notesDao.addNoteContent(processedContent.toContentItemDbModels(noteId))
     }
 
     override suspend fun deleteNote(id: Int) {
@@ -60,6 +62,8 @@ class NotesRepositoryImpl @Inject constructor(
         val processedNote = note.copy(content = processedContent)
 
         notesDao.addNote(processedNote.toDbModel())
+        notesDao.deleteNoteContent(note.id)
+        notesDao.addNoteContent(processedContent.toContentItemDbModels(note.id))
     }
 
     override fun getAllNotes(): Flow<List<Note>> {

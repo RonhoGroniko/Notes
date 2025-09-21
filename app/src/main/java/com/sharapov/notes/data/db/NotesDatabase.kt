@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sharapov.notes.data.db.models.ContentItemDbModel
 import com.sharapov.notes.data.db.models.NoteDbModel
-import com.sharapov.notes.data.db.NotesDao
 
 @Database(
-    entities = [NoteDbModel::class],
-    version = 2,
+    entities = [NoteDbModel::class, ContentItemDbModel::class],
+    version = 3,
     exportSchema = false
 )
 abstract class NotesDatabase : RoomDatabase() {
